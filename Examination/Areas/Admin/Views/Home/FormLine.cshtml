@@ -1,0 +1,249 @@
+﻿@model Examination.Data.Question
+
+
+
+
+
+<form asp-action="EditQuestion">
+    @await Html.PartialAsync("_ModalHeader", new ModalHeader
+{
+   Heading = (Model.ID == 0) ? "Yangi savolni qo'shish" : "Test savolni tahrirlash "
+
+})
+    <div class="modal-body" style="max-height: 45rem; overflow-y: auto">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ID" />
+        <div class="form-group">
+            <div class="text-md-center">
+                <label asp-for="TestID" class="control-label text-md-center"></label>
+            </div>
+            <input asp-for="Test.Nomi" class="form-control" disabled />
+            <input asp-for="TestID" type="hidden" />
+
+        </div>
+        <div class="form-group">
+            <div class="text-md-center">
+                <label asp-for="Nomi" class="control-label"></label>
+            </div>
+
+            <textarea asp-for="Nomi" class="form-control" id="quetion"></textarea>
+
+
+            <script type="text/javascript">
+                $("#quetion").summernote({
+                    dialogsInBody: true,
+                    backColor: 'red',
+                    tabsize: 2, height: 120,
+                    toolbar: [['style', ['style']], ['font', ['fontname', 'fontsize', 'fontsizeunit', 'color', 'forecolor', 'backcolor', 'bold', 'italic', 'strikethrough', 'superscript', 'subscript', 'underline', 'clear']],
+                        ['para', ['paragraph', 'ul', 'ol', 'paragraph']], ['table', ['table']], ['insert', ['math', 'link', 'picture', 'hr']], ['view', ['fullscreen', 'codeview', 'help']]]
+                }).summernote('pasteHTML', Model.Nomi)
+
+            </script>
+        </div>
+        <div class="text-md-center" style="border-bottom:1px solid;margin-bottom:1.2rem;">
+            <h4>Test variantlari</h4>
+        </div>
+        @if (@Model.Answers != null)
+        {
+            @for (int k = 0; k < Model.Answers.Count(); k++)
+            {
+
+                <div class="form-group">
+                    <div class="row" data-number="@k" style="margin-left:0;margin-right:0 ;border:2px solid #0094ff;padding:5px;margin-bottom:2rem;">
+                        <input type="hidden" asp-for="Answers[k].ID" data-answerid="@k"/>
+                        <input type="hidden" asp-for="Answers[k].Question.ID" data-questionid="@k" />
+                        <div class="col" style="max-width:95%;padding-left:0;padding-right:0.2rem">
+
+                            <textarea asp-for="Answers[k].Nomi" data-answernomi="@k" data-id="@Model.Answers[k].ID" class="form-control" id="answer_@k"></textarea>
+                            <script type="text/javascript">
+                                $("#answer_@k").summernote({
+                          dialogsInBody: true,
+                          backColor: 'red',
+                         height: 80,
+                         toolbar: [['style', ['style']], ['font', ['fontname', 'fontsize', 'fontsizeunit', 'color', 'forecolor', 'backcolor', 'bold', 'italic', 'strikethrough', 'superscript', 'subscript', 'underline', 'clear']],
+                             ['para', ['paragraph','ul', 'ol', 'paragraph']], ['table', ['table']], ['insert',
+                        ['math','link', 'picture','hr']], ['view', ['fullscreen', 'codeview', 'help']]]
+
+
+                    }).summernote('pasteHTML', Model.Answers[k].Nomi)
+
+                            </script>
+                        </div>
+
+                        <div class="col" style="max-width:8%;width:6%;border:1px solid #000000;">
+                            <div class="row">
+                                <div class="col " style="margin-top:2.0rem">
+                                    <div class="row">
+                                        <div class="btn-group-vertical" style="margin-left:36%">
+                                            @if (Model.Answers[k].isTrue)
+                                            {
+                                                var id1 = "Answers_" + k.ToString() + "_isTrue";
+                                                <input name="Answers[@k].isTrue" data-answeristrue="@k" checked="checked" value="true" data-val-required="The isTrue field is required." data-val="true" type="checkbox" style="margin-right:auto; height: 4rem; width:1.4rem;"  />
+                                            }
+                                            else { 
+                                                var id1 = "Answers_" + k.ToString() + "_isTrue";
+                                        <input name="Answers[@k].isTrue" type="checkbox" data-answeristrue="@k" value="true" data-val-required="The isTrue field is required." data-val="true" style="margin-right:auto; height: 4rem; width:1.4rem;" />
+                                            }
+
+                                            @*<input type="checkbox" style="margin-right:auto; height: 4rem; width:1.4rem;" asp-for="Answers[k].isTrue" />*@
+                                            <button class="close" aria-hidden="true" onclick="Delete(this);" type="button" style="height:1.4rem; color:#ff0000 ;">×</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            }
+        }
+
+        <div class="row">
+
+            <div class="col"></div>
+
+            <div class="col">
+                <a role="button" href="#" class="btn btn-success " onclick="Add(this);">Qo'shish</a>
+
+
+            </div>
+            <script type="text/javascript">
+                 function Delete(sender) {
+
+                     var Answer = $(sender).parent().parent().parent().parent().parent().parent().find("textarea");
+                      var AnswerID = Answer.data("id");
+                     if (AnswerID == 0) {
+                         Answer.parent().parent().parent().remove();
+                         var i = 0;
+                         var dom = $("div[class='modal-body']");
+                        
+                         $(dom).find("div[data-number]").each(function (index, elem) {
+
+                           
+                             var answ = "Answers[" + i.toString() + "].ID";
+                             $(elem).find("input[data-answerid]").attr("name", answ).attr("data-answerid", i.toString());
+
+                             var answ = "Answers[" + i.toString() + "].Question.ID ";
+                             $(elem).find("input[data-questionid]").attr("name", answ).attr("data-questionid", i.toString());
+                               
+                             answ = "Answers[" + i.toString() + "].Nomi";
+                             $(elem).find("textarea[data-answernomi]").attr("name", answ).attr("data-answernomi",i.toString());
+                             answ = "Answers[" + i.toString() + "].isTrue";
+                             $(elem).find("input[data-answeristrue]").attr("name", answ).attr("data-answeristrue", i.toString());
+                             $(elem).attr("data-number", i.toString());
+                             i = i + 1;
+                            
+
+                         });
+
+                     }
+
+                                else {
+                                    $.ajax({
+                                    method: "Post",
+                               url: "@Url.Action("DeleteAnswer", "Home")",
+                                    data: { ID: AnswerID },
+                                    success: function (result) {
+                                        if (result.status) {
+                                            Answer.parent().parent().parent().remove();
+                                            var i = 0;
+                         var dom = $("div[class='modal-body']");
+                        
+                         $(dom).find("div[data-number]").each(function (index, elem) {
+
+                           
+                             var answ = "Answers[" + i.toString() + "].ID";
+                             $(elem).find("input[data-answerid]").attr("name", answ).attr("data-answerid", i.toString());
+
+                             var answ = "Answers[" + i.toString() + "].Question.ID ";
+                             $(elem).find("input[data-questionid]").attr("name", answ).attr("data-questionid", i.toString());
+                               
+                             answ = "Answers[" + i.toString() + "].Nomi";
+                             $(elem).find("textarea[data-answernomi]").attr("name", answ).attr("data-answernomi",i.toString());
+                             answ = "Answers[" + i.toString() + "].isTrue";
+                             $(elem).find("input[data-answeristrue]").attr("name", answ).attr("data-answeristrue", i.toString());
+                             $(elem).attr("data-number", i.toString());
+                             i = i + 1;
+                            
+
+                         });
+
+
+                                    } else {  alert('Hatolik yuz berdi');}
+                                    }
+                                    });
+                                    }
+                                    }
+
+        function Add(sender) {
+
+          
+            var contnet = $(sender).parent().parent().parent().find(".note - editable").last();
+           
+
+                var questionNumber = $(sender).parent().parent().parent().find("div[data-number]").last().data("number");
+                questionNumber = questionNumber + 1;
+
+
+                $.ajax({
+        method: "Get",
+                    url: "@Url.Action("Add","Home")",
+          data: {Index:questionNumber },
+        success: function (result) {
+        $(sender).parent().parent().before(result)
+
+        }
+        });
+
+                }
+
+                function Prewiew(sender) {
+                   
+
+                    var $mathElement = $(sender).parent().parent().find(".note-math-dialog");
+
+                  
+                    var mathSpan = $mathElement[0];
+
+                   
+                    var oldMath = mathSpan.innerHTML;
+                    try {
+                       
+
+                        katex.render($(sender).val(), mathSpan);
+
+
+                        
+                       
+                    }
+
+                    catch (e) {
+                        mathSpan.innerHTML = oldMath;
+                      
+                       
+                    }
+
+
+               
+
+                     }
+
+            </script>
+
+
+
+
+        </div>
+
+    </div>
+
+
+    @await Html.PartialAsync("_ModalFooter", new ModalFooter { })
+</form>
+@await Html.PartialAsync("_ValidationScriptsPartial")
+@section scripts{
+
+}

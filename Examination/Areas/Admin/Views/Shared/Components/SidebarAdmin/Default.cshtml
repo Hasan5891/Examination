@@ -1,0 +1,142 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.IO
+@using Examination.Data
+@model IEnumerable<Examination.Areas.Admin.Models.SidebarMenu>
+@inject UserManager<ApplicationUser> UserManager
+        <!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-link">
+        <img src="~/lib/admin-lte/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light">AdminLTE</span>
+    </a>
+
+    <!-- sidebar: style can be found in sidebar.less -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+
+              
+                @{
+                    var user = UserManager.GetUserAsync(User);
+                    if (user.Result.AvatarImage != null)
+                    {
+                        //Convert byte arry to base64string
+                        string imreBase64Data = Convert.ToBase64String(user.Result.AvatarImage);
+                        string imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                        //Passing image data in viewbag to view
+
+                        <img src="@imgDataURL" class="img-circle elevation-2" alt="User Image" />
+
+                    }
+                    else
+                    {
+                        string imgPath = $"{Directory.GetCurrentDirectory()}{@"\wwwroot\img\avatar_2x.png"}";
+                        // Convert image to byte array
+                        byte[] byteData = System.IO.File.ReadAllBytes(imgPath);
+                        //Convert byte arry to base64string
+                        string imreBase64Data = Convert.ToBase64String(byteData);
+                        string imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                        //Passing image data in viewbag to view
+                        <img src="@imgDataURL" class="img-circle elevation-2" alt="User Image" />
+
+
+                    }
+                }
+
+
+
+            </div>
+            <div class="info">
+               
+                <a href="#" class="d-block"> @user.Result.UserName</a>
+            </div>
+        </div>
+        <!-- search form (Optional) -->
+        @*<form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search...">
+                    <span class="input-group-btn">
+                        <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>*@
+        <!-- /.search form -->
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                @foreach (var menu in Model as IEnumerable<SidebarMenu>)
+                {
+                    if (menu.Type == SidebarMenuType.Header)
+                    {
+                        <li class="nav-link">@menu.Name</li>
+                    }
+                    else if (menu.Type == SidebarMenuType.Link)
+                    {
+                        var active = string.Empty;
+                        if (menu.URLPath != "/" && @Context.Request.Path.Value.Contains(menu.URLPath))
+                        {
+                            active = "active";
+                        }
+                        <li class="nav-item">
+                            <a href="@menu.URLPath" class="nav-link @active">
+                                <i class="@menu.IconClassName nav-icon"></i>
+                                <p>@menu.Name</p>
+                                <span class="pull-right-container">
+                                    @{
+                                        if (menu.LinkCounter.Item1 > 0)
+                                        {
+                                            <small class="badge float-right bg-primary">@menu.LinkCounter.Item1</small>
+                                        }
+                                        if (menu.LinkCounter.Item2 > 0)
+                                        {
+                                            <small class="badge float-right bg-success">@menu.LinkCounter.Item2</small>
+                                        }
+                                        if (menu.LinkCounter.Item3 > 0)
+                                        {
+                                            <small class="badge float-right bg-danger">@menu.LinkCounter.Item3</small>
+                                        }
+                                    }
+                                </span>
+                            </a>
+                        </li>
+
+                    }
+                    else if (menu.Type == SidebarMenuType.Tree)
+                    {
+                        var active = string.Empty;
+                        var menuopen = string.Empty;
+                        if (menu.TreeChild.Any(x => @Context.Request.Path.Value.Contains(x.URLPath)))
+                        {
+                            active = "active";
+                            menuopen = "menu-open";
+                        }
+
+                        <li class="nav-item has-treeview @active @menuopen">
+                            <a href="#" class="nav-link @active">
+                                <i class="nav-icon @menu.IconClassName"></i> <p>@menu.Name <i class="right fa fa-angle-left"></i></p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                @foreach (SidebarMenu subMenu in menu.TreeChild)
+                                {
+                                    active = string.Empty;
+                                    if (Context.Request.Path.Value.EndsWith(subMenu.URLPath))
+                                    {
+                                        active = "active";
+                                    }
+                                    <li class="nav-item"><a href="@subMenu.URLPath" class="nav-link @active">@subMenu.Name</a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                }
+            </ul>
+            <!-- /.sidebar-menu -->
+        </nav>
+    </div>
+    <!-- /.sidebar -->
+</aside>

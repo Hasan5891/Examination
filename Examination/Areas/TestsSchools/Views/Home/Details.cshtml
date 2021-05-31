@@ -1,0 +1,235 @@
+﻿
+@{
+    @model TestDetailModel
+
+}
+<div class="row">
+    <div class="col s10 m6 l4 s6 offset-s1 offset-m3 offset-l4">
+
+        <div id="modal" class="modal">
+
+            <div class="modal-content">
+                <h4>Testga kirish</h4>
+                <div class="col s12">
+                    <form data-ajax="true" data-ajax-method="get" data-ajax-url="@Url.Action("Begin","Home",new { area = "TestsSchools"})" data-ajax-update="#Ajax"  data-ajax-failure="failure" data-ajax-loading="#spinner">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input name="TestID" asp-for="TestID" style="pointer-events: none;">
+                                <label asp-for="TestID">Test id raqami</label>
+                                <span class="red-text helper-text" data-valmsg-replace="true" data-valmsg-for="TestID"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input name="UserName" id="UserName" type="text" data-val="true" data-val-required="Ma'lumotni kiritish talab etiladi">
+                                <label for="UserName">Ism va Sharifingiz</label>
+                                <span class="red-text helper-text" data-valmsg-replace="true" data-valmsg-for="UserName"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="validation-message center" id="validation-message" style="display: flex;"></div>
+                        </div>
+                        <div class="input-field col s6">
+                            <button type="submit" class="waves-effect waves-light btn">Kirish</button>
+                            <span id='spinner' style='display:none;'><i class='fa fa-spinner fa-spin'></i></span>
+                        </div>
+
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="main">
+
+    <div class="wrapper">
+
+
+
+
+        <section id="content">
+            <div class="row">
+                <div class="col s4">
+
+                </div>
+                <div class="col s4">
+
+                </div>
+                <div class="col s4">
+
+                </div>
+            </div>
+
+            <div class="container">
+
+                <div id="work-collections">
+                    <div class="row">
+                        <div class="col s12 m6 l4">
+                            <div class="card" id="profile-card">
+                                <div class="card-image waves-effect waves-block waves-light">
+                                    <img class="activator" alt="user background" src="~/img/user-bg.jpg">
+                                </div>
+                                <div class="card-content">
+                                    @if (Model.Foto == null)
+                                    {
+                                        <img class="circle responsive-img activator card-profile-image" alt="" src="~/img/tom.jpg">
+                                    }
+                                    else
+                                    { <img class="circle responsive-img activator card-profile-image" alt="" src="@Model.Foto">}
+
+                                    <a class="btn-floating activator btn-move-up waves-effect waves-light darken-2 right">
+                                        <i class="mdi-action-account-circle"></i>
+                                    </a>
+                                    <span class="card-title activator grey-text text-darken-4">@Model.UserName</span>
+                                    <p><i class="mdi-action-perm-identity cyan-text text-darken-2"></i> Test yaratuvchi</p>
+                                    <p><i class="mdi-action-perm-phone-msg cyan-text text-darken-2"></i> @Model.Phone</p>
+                                    <p><i class="mdi-communication-email cyan-text text-darken-2"></i> @Model.email</p>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l8">
+                            <ul class="collection" id="projects-collection">
+                                <li class="collection-item avatar">
+                                    <i class="mdi-file-folder circle light-blue darken-2"></i>
+                                    <span class="collection-header">Test Xarakteristikasi</span>
+
+                                    <a class="secondary-content" href="#"><i class="mdi-action-grade"></i></a>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row">
+                                        <div class="col s6">
+                                            <p class="collections-title">Predmet Nomi</p>
+
+                                        </div>
+                                        <div class="col s3">
+                                            <span class="task-cat cyan">@Model.PredmetName</span>
+                                        </div>
+                                        <div class="col s3">
+                                            <div id="project-line-1"><canvas width="135" height="30" style="display: inline-block; width: 135px; height: 30px; vertical-align: top;"></canvas></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row">
+                                        <div class="col s6">
+                                            <p class="collections-title">Test ID raqami</p>
+
+                                        </div>
+                                        <div class="col s3">
+                                            <span class="task-cat grey darken-3">@Model.TestID</span>
+                                        </div>
+                                        <div class="col s3">
+                                            <div id="project-line-2"><canvas width="135" height="30" style="display: inline-block; width: 135px; height: 30px; vertical-align: top;"></canvas></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row">
+                                        <div class="col s6">
+                                            <p class="collections-title">Test nomi</p>
+
+                                        </div>
+                                        <div class="col s3">
+                                            <span class="task-cat teal">@Model.TestName</span>
+                                        </div>
+                                        <div class="col s3">
+                                            <div id="project-line-3"><canvas width="135" height="30" style="display: inline-block; width: 135px; height: 30px; vertical-align: top;"></canvas></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row">
+                                        <div class="col s6">
+                                            <p class="collections-title">Savollar soni</p>
+
+                                        </div>
+                                        <div class="col s3">
+                                            <span class="task-cat green">@Model.TotalItems</span>
+                                        </div>
+                                        <div class="col s3">
+                                            <div id="project-line-4"><canvas width="135" height="30" style="display: inline-block; width: 135px; height: 30px; vertical-align: top;"></canvas></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row">
+                                        <div class="col s6">
+                                            <p class="collections-title">Test mazmuni</p>
+
+                                        </div>
+                                        <div class="col s6">
+                                            <span class="task-cat #e64a19 deep-orange darken-2">@Model.Description</span>
+                                        </div>
+
+                                    </div>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row">
+                                        <div class="col s6">
+                                            <a data-target="modal" class="btn modal-trigger">Testni boshlash</a>
+
+
+                                        </div>
+                                        <div class="col s3">
+
+                                        </div>
+                                        <div class="col s3">
+                                            <div id="project-line-4"><canvas width="135" height="30" style="display: inline-block; width: 135px; height: 30px; vertical-align: top;"></canvas></div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+
+
+
+        </section>
+
+
+
+
+
+    </div>
+
+</div>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+@section scripts{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.modal').modal({
+                endingTop:"30%",
+                dismissible: false,
+                onCloseEnd: function () {
+                    $('.modal').html("");
+                }
+            });
+
+        });
+
+        function failure(xhr) {
+
+             $("#validation-message").first().html("<i class='material-icons red-text'>error_outline</i>  Status:"+xhr.status+", Matni:"+xhr.statusText);
+        }
+   
+
+    </script>
+
+
+
+
+
+}

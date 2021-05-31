@@ -1,0 +1,29 @@
+﻿@model Examination.Data.Part
+
+<form asp-action="DeletesPart">
+    @await Html.PartialAsync("_ModalHeader", new ModalHeader
+{
+    Heading = "Bo'limni o'chirish"
+})
+
+    <div class="modal-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ID" />
+        <div class="form-group">
+            <label asp-for="PredmetID" class="control-label"></label>
+            <input asp-for="Predmet.Nomi" class="form-control" disabled />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Nomi" class="control-label"></label>
+            <input asp-for="Nomi" class="form-control" disabled/>
+            </div>
+
+    </div>
+
+
+
+
+    @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "O'chirish", classButton = "btn btn-danger" });
+</form>
+@await Html.PartialAsync("_ValidationScriptsPartial")

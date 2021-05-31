@@ -1,0 +1,56 @@
+﻿@model LoginModel
+@{
+    ViewData["Title"] = "Profil";
+    Layout = "~/Areas/TestsSchools/Views/Shared/_Layout.cshtml";
+    
+}
+
+
+
+<div class="card">
+    <form method="POST" asp-action="Login">
+        <input asp-for="ReturnUrl" type="hidden" />
+        <div class="card-content" style="min-height:80vh">
+            <h5 class="center" style="font-size:1.4rem;font-weight:700">Tizimga kirish</h5>
+
+            <div class="row">
+                <div asp-validation-summary="All" class="red-text center"></div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12 m8 l6 xl4 offset-m2 offset-l3 offset-xl4  require">
+                    <i class="material-icons prefix">account_box</i>
+                    <input asp-for="Login" type="text" />
+                    <label asp-for="Login"> </label>
+                    <span asp-validation-for="Login" class="red-text helper-text"></span>
+
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="input-field col s12 m8 l6 xl4 offset-m2 offset-l3 offset-xl4  require">
+                    <i class="material-icons prefix">lock_open</i>
+                    <input asp-for="Password" type="password" />
+                    <label asp-for="Password"> </label>
+                    <span asp-validation-for="Password" class="red-text helper-text"></span>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12 m8 l6 xl4 offset-m2 offset-l3 offset-xl4 center required">
+                    <button class="waves-effect waves-light btn" type="submit">Kirish</button>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

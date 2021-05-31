@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Examination.Data.Part>
+    @{Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+      var modalID = "Modal1";
+       var areaModalID = "edit-question-line-label";
+    }
+
+
+
+
+    <h1 class="text-center">Bo'limlar konstruktor tizimi</h1>
+    <div class="justify-content-end" style="margin-left:45%;margin-bottom:4px">
+
+        <a id="createLine" asp-action="Create" class="btn-primary btn-lg" data-target="#@modalID" data-toggle="modal" data-backdrop="static" data-keyboard="false">
+            <i class="fa fa-plus"></i> Qo'shish
+        </a>
+
+
+
+    </div>
+    <table class="table" id="Parts">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    Bo'lim ID
+                </th>
+                <th>Bo'lim nomi</th>
+                <th>Fan nomi</th>
+
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nomi)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Predmet.Nomi)
+
+                </td>
+
+
+                <td>
+
+                    <a asp-action="Create" asp-route-id="@item.ID" class="btn btn-success" data-target="#@modalID" data-toggle="modal" data-backdrop="static" data-keyboard="false">
+                        <i class="fa fa-edit"> Tahrirlash</i>
+                    </a>
+
+
+                    <a asp-action="DeletesPart" asp-route-id="@item.ID" class="btn btn-danger" data-target="#@modalID" data-toggle="modal" data-backdrop="static" data-keyboard="false">
+                        <i class="fa fa-remove"> O'chirish</i>
+                    </a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    @await Html.PartialAsync("_Modal", new Modal
+    {
+    ID = modalID,
+    AreaLabelID = areaModalID,
+    Size = ModalSize.Large
+    })
+
+
+    @section scripts{
+
+
+        @{await Html.RenderPartialAsync("_ModalScriptsInit", modalID);}
+        <script src="~/DataTables-1.10.20/media/js/jquery.dataTables.min.js"></script>
+
+
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#Parts").DataTable({
+                    paging: true,
+
+                    lengthChange: true,
+                    searching: true,
+                    ordering: true
+                });
+            });
+        </script>
+
+    }
+

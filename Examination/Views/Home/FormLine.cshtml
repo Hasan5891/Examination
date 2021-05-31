@@ -1,0 +1,33 @@
+﻿@model Examination.Data.Test
+
+
+
+
+
+<div class="modal-content">
+    <h4>Testga kirish</h4>
+    <div class="col s12">
+        <form data-ajax="true" data-ajax-method="get" data-ajax-url="@Url.Action("Begin","Home",new { area = "TestsSchools"})" data-ajax-update="#Ajax" data-ajax-begin="ChekingTest" data-ajax-failure="failure" data-ajax-loading="#spinner">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input name="TestID" asp-for="ID">
+                    <label asp-for="ID">Test id raqami</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="validation-message center" id="validation-message" style="display: flex;"></div>
+            </div>
+            <div class="input-field col s6">
+                <button type="submit" class="waves-effect waves-light btn">Kirish</button>
+                <span id='spinner' style='display:none;'><i class='fa fa-spinner fa-spin'></i></span>
+            </div>
+
+
+
+        </form>
+    </div>
+</div>
+<div class="modal-footer">
+    <a href="" class="modal-close waves-effect waves-green btn-flat">Yopish</a>
+</div>
+<script src="~/js/site.js"></script>

@@ -1,0 +1,39 @@
+﻿
+@model CatalogTestitemViewModel
+
+
+
+
+
+
+
+
+  
+
+        <div class="info-box bg-info">
+            <span class="info-box-icon"><i class="fa fa-list fa-2x" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">@Model.Predmet</span>
+                <span class="info-box-number">@Model.Nomi</span>
+
+                <div class="progresss">
+
+                </div>
+                <span class="progress-description">
+                    Savollar soni :@Model.Soni   
+                </span>
+                <span class="progress-description" style="margin-top:0.5rem">
+                    <a data-ajax="true" data-ajax-method="post" data-ajax-url="@Url.Action("Begin", new { area = "TestsSchools",TestID=Model.ID })" data-ajax-update="#Ajax" data-ajax-loading="#load" class="btn-small" role="button">Boshlash</a>
+                    <a data-ajax="true" data-ajax-method="post" data-ajax-url="@Url.Action("Details", new { area = "TestsSchools", id =Model.ID })" data-ajax-update="#Ajax" data-ajax-loading="#load" class="btn-small" role="button">Batafsil</a>
+                </span>
+
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+
+    
+
+
+
+

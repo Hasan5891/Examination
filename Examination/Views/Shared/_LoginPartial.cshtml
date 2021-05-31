@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Examination.Data
+@using System.IO
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+
+
+    <li>
+        <a id="login" asp-area="Admin" asp-controller="Profile" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <i class="fa fa-sign-out"></i>
+            Chiqish
+        </a>
+
+    </li>
+}
+else
+{
+    
+    <li>
+        <a id="login" asp-area="Admin" asp-controller="Register" asp-action="Login">
+            <i class="fa fa-sign-in"></i>
+            Login
+        </a>
+    </li>
+}
+

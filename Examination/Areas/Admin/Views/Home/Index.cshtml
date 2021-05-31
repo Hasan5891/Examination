@@ -1,0 +1,165 @@
+﻿@model IEnumerable<Examination.Data.Test>
+@{ Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var modalID = "Modal1";
+    var areaModalID = "edit-question-line-label";
+}
+
+
+
+
+<h1 class="text-center">Test konstruktor tizimi</h1>
+<div class="justify-content-end" style="margin-left:45%;margin-bottom:4px">
+
+    <a href="#" data-target="#myModal" class="btn btn-primary btn-lg" data-toggle="modal"><i class="fa fa-plus"></i> Qo'shish</a>
+
+
+</div>
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Create">
+                <div class="modal-header">
+                    <h5 class="modal-title">Test yaratish</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="form-group">
+                        <label class="control-label">Nomi</label>
+                        <input name="Nomi" class="form-control" />
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Bo'lim nomi</label>
+                        <select name="PartID" class="form-control"
+                                asp-items="@ViewBag.Parts"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Mazmuni</label>
+                        <textarea maxlength="100" name="Description" class="form-control" ></textarea>
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Bekor</button>
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<table class="table" id="Parts">
+    <thead class="thead-light">
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Test nomi
+            </th>
+            <th>Fan nomi</th>
+            <th>
+                Bolim nomi
+            </th>
+            <th>
+           Faolligi
+            </th>
+            <th>
+                Savollar soni
+            </th>
+            <th>
+                Natijalari soni
+            </th>
+            <th></th>
+            <th>Natijalarni o'chirish</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nomi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Part.Predmet.Nomi)
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Part.Nomi)
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isactive)
+
+            </td>
+            <td>
+                @item.Questions.Count().ToString()
+
+            </td>
+            <td>
+                @item.UserExams.Count().ToString()
+
+            </td>
+
+            <td>
+
+                <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-success">
+                    <i class="fa fa-edit"> Tahrirlash</i>
+                </a>
+
+
+                <a asp-controller="Home" asp-action="DeletesTest" data-target="#@modalID" data-toggle="modal" data-backdrop="static" data-keyboard="false" asp-route-id="@item.ID" class="btn btn-danger">
+                    <i class="fa fa-remove"> O'chirish</i>
+                </a>
+            </td>
+            <td>
+                <a asp-controller="Home" asp-action="DeleteExam" data-target="#@modalID" data-toggle="modal" data-backdrop="static" data-keyboard="false" asp-route-id="@item.ID" class="btn btn-danger">
+                    <i class="fa fa-remove"> O'chirish</i>
+                </a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+@await Html.PartialAsync("_Modal", new Modal
+ {
+     ID = modalID,
+     AreaLabelID = areaModalID,
+     Size = ModalSize.Large
+ })
+
+
+@section scripts{
+
+
+    @{await Html.RenderPartialAsync("_ModalScriptsInit", modalID);}
+    <script src="~/DataTables-1.10.20/media/js/jquery.dataTables.min.js"></script>
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Parts").DataTable({
+                paging: true,
+
+                lengthChange: true,
+                searching: true,
+                ordering: true
+            });
+        });
+    </script>
+
+}
+

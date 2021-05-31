@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 2 | Starter</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/summernote-0.8.16-dist/summernote-bs4.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css">
+  
+    <link rel="stylesheet" href="~/lib/admin-lte/dist/css/adminlte.min.css" />
+    <link rel="stylesheet" href="~/css/siteAdmin.css" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+    <script src="~/lib/admin-lte/dist/js/adminlte.min.js" asp-append-version="true"></script>
+    <link href="~/DataTables-1.10.20/media/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/DataTables-1.10.20/media/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+   
+    <link href="~/lib/AT/at.min.css" rel="stylesheet" />
+    <script src="~/lib/AT/katex.min.js"></script>
+    <script defer src="~/lib/AT/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+
+</head>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to get the
+desired effect
+|---------------------------------------------------------|
+| SKINS         | skin-blue                               |
+|               | skin-black                              |
+|               | skin-purple                             |
+|               | skin-yellow                             |
+|               | skin-red                                |
+|               | skin-green                              |
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | fixed                                   |
+|               | layout-boxed                            |
+|               | layout-top-nav                          |
+|               | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <!-- Main Header -->
+        @await Component.InvokeAsync("Header")
+        <!-- Left side column. contains the logo and sidebar -->
+        @await Component.InvokeAsync("SidebarAdmin")
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                @await Component.InvokeAsync("PageHeader")
+                @await Component.InvokeAsync("Breadcrumb")
+                <br />
+                @await Component.InvokeAsync("PageAlert")
+            </section>
+            <!-- Main content -->
+            <section class="content">
+                <!-- Your Page Content Here -->
+                @RenderBody()
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- Main Footer -->
+        @await Component.InvokeAsync("Footer")
+        <!-- Control Sidebar -->
+        @await Component.InvokeAsync("ControlSidebar")
+        <!-- /.control-sidebar -->
+        <!-- Add the sidebar's background. This div must be placed
+             immediately after the control sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+    </div>
+    <!-- ./wrapper -->
+    <!-- Optionally, you can add Slimscroll and FastClick plugins.
+    Both of these plugins are recommended to enhance the
+    user experience. Slimscroll is required when using the
+    fixed layout. -->
+        <script src="~/lib/jquery/dist/jquery.unobtrusive-ajax.min.js"></script>
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

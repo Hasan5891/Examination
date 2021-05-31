@@ -1,0 +1,49 @@
+﻿@model int
+
+<div class="form-group">
+    <div class="row" data-number="@Model" style="margin-left:0;margin-right:0 ;border:2px solid #0094ff;padding:5px;margin-bottom:2rem;">
+
+        <input type="hidden" name="Answers[@Model].ID" data-answerid="@Model" />
+        <input type="hidden" name="Answers[@Model].Question.ID" data-questionid="@Model" />
+      
+       
+
+        <div class="col" style="max-width:95%;padding-left:0;padding-right:0.2rem">
+
+            <textarea name="Answers[@Model].Nomi" data-answernomi="@Model" data-id="0" class="form-control" id="answer_@Model"></textarea>
+            <script type="text/javascript">
+            $("#answer_@Model").summernote({
+
+                        dialogsInBody: true,
+                         focus: true  ,
+                        fontSize: 20,
+                         disableDragAndDrop: true,
+                            backColor:'red',
+                            height: 80,
+                        toolbar: [['style', ['style']], ['font', ['fontname', 'fontsize', 'fontsizeunit', 'color', 'forecolor', 'backcolor', 'bold', 'italic', 'strikethrough', 'superscript', 'subscript', 'underline', 'clear']],
+                             ['para', ['paragraph','ul', 'ol', 'paragraph']], ['table', ['table']], ['insert',
+                        ['math','link', 'picture','hr']], ['view', ['fullscreen', 'codeview', 'help']]]
+                })
+
+            </script>
+        </div>
+
+        <div class="col" style="max-width:8%;width:6%;border:1px solid #000000;">
+            <div class="row">
+                <div class="col " style="margin-top:2.0rem">
+                    <div class="row">
+                        <div class="btn-group-vertical" style="margin-left:36%">
+                            <input name="Answers[@Model].isTrue" data-answeristrue="@Model" aria-hidden="true" style="  margin-right:auto; height: 4rem; width:1.4rem;" type="checkbox" value="true" data-val-required="The isTrue field is required." data-val="true">
+
+                            <button class="close" aria-hidden="true" onclick="Delete(this);" type="button" style="height:1.4rem; color:#ff0000 ;">×</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    </div>

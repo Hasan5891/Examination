@@ -1,0 +1,96 @@
+@using Examination.Data
+@model Examination.Areas.TestsSchools.Models.SideNaavModel
+@using Microsoft.AspNetCore.Identity
+@using System.IO
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+<ul id="slide-out" class="sidenav">
+
+    <li><a class="btn-close sidenav-close "><i class="material-icons " style="font-size: 30px">close</i></a></li>
+    @if (SignInManager.IsSignedIn(User))
+    {
+
+        <li class="user-li active">
+            <div class="user-view">
+
+
+
+                @{
+                    var user = UserManager.GetUserAsync(User);
+                    if (user.Result.photo_url == null)
+                    {
+                        string imgPath = $"{Directory.GetCurrentDirectory()}{@"\wwwroot\img\avatar_2x.png"}";
+                        // Convert image to byte array
+                        byte[] byteData = System.IO.File.ReadAllBytes(imgPath);
+                        //Convert byte arry to base64string
+                        string imreBase64Data = Convert.ToBase64String(byteData);
+                        string imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                        //Passing image data in viewbag to view
+                        <div>
+                            <img src="@imgDataURL" width="48" class="circle" alt="User Image" />
+                        </div>
+                    }
+                    else
+                    {
+
+                        <div>
+                            <img src="@user.Result.photo_url" width="48" class="circle" alt="User Image" />
+                        </div>
+
+                    }
+                }
+
+
+            </div>
+        </li>
+        <li class="teal">
+            <ul class="collapsible collapsible-accordion">
+                <li>
+                    <a class="collapsible-header white-text waves-effect waves-blue">@user.Result.FISH <i class="material-icons right white-text" style="margin-right:0;">expand_more</i></a>
+                    <div class="collapsible-body z-depth-3" style="display: block;">
+                        <ul>
+                            <li>
+                            <a class="waves-effect waves-blue"  asp-area="Admin" asp-controller="Profile" asp-action="Index" >
+                                <i class="material-icons "> account_circle</i>Mening profilim</a></li>
+                            <li><a class="waves-effect waves-blue" asp-area="Admin" asp-controller="Profile" asp-action="Password"><i class="material-icons "> lock</i>Parolim</a></li>
+                            <li><a class="waves-effect waves-blue" asp-area="Admin" asp-controller="Profile"  asp-action="MyResult"><i class="material-icons "> grid_on</i>Mening natijalarim</a></li>
+                            <li>
+                                <a class="waves-effect waves-blue" asp-area="Admin" asp-controller="Profile" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                    <i class="material-icons ">exit_to_app</i>
+                                    Chiqish
+                                </a>
+
+                            <li><div class="divider"></div></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </li>
+    }
+    <li class="bold"><a class="waves-effect waves-teal" asp-action="Index" asp-controller="Home" asp-area=""><i class="material-icons ">home</i>Home</a></li>
+    <li class="divider"></li>
+    <li>
+        <ul class="collapsible collapsible-accordion">
+
+            @foreach (var item in Model.Predmets)
+            {
+                <li class="bold">
+                    <a tabindex="0" style="font-weight:bold" class="bold teal-text collapsible-header waves-effect waves-teal">@item.Nomi</a>
+                    <div class="collapsible-body">
+                        <ul>
+                            @foreach (var part in item.Parts)
+                            {
+                                <li><a asp-area="TestsSchools" asp-action="Index" asp-controller="Home" asp-route-PartFilterApplied="@part.ID" asp-route-PredmetsFilterApplied="@item.ID">@part.Nomi</a></li>
+
+                            }
+                        </ul>
+                    </div>
+                </li>
+
+            }
+
+
+        </ul>
+    </li>
+
+</ul>

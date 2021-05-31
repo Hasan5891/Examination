@@ -1,0 +1,219 @@
+﻿@model TestResulGroupModel
+
+@{
+    ViewData["Title"] = "Test";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="text-md-center" style="border-bottom:1px solid;margin-bottom:0;">
+    <h1>Test Natijalari</h1>
+</div>
+
+
+
+
+    
+
+        <form asp-action="Index" asp-controller="Result" method="post">
+            <div class="row justify-content-center" style="margin-top:3px">
+                <div class="col-10 col-sm-5 col-md-3">
+                    <div class="form-group">
+
+                        <select asp-for="@Model.PredmetsFilterApplied" asp-items="@Model.Predmets"
+                                class="custom-select"></select>
+
+
+                    </div>
+                </div>
+                <div class="col-10 col-sm-5 col-md-3">
+
+                    <div class="form-group">
+
+                        <select asp-for="@Model.PartsFilterApplied"
+                                asp-items="@Model.Parts" class="custom-select"></select>
+
+
+
+                    </div>
+
+                </div>
+                <div class="col-10 col-sm-5 col-md-3">
+
+                    <div class="form-group">
+
+                        <select asp-for="@Model.TestsFilterApplied"
+                                asp-items="@Model.Tests" class="custom-select"></select>
+                    </div>
+
+                </div>
+                <div class="col-1 col-sm-1 col-md-1 ">
+                    <button class="btn btn-block bg-gradient-primary" type="submit">Go</button>
+                </div>
+
+
+            </div>
+</form>
+
+
+
+@if (Model.Users != null)
+{<form asp-action="Index" asp-controller="Result" method="post" id="form">
+
+   
+
+            <input type="hidden" id="page" name="page1" value="@Model.PaginationInfo.ActualPage " />
+
+
+            <div class="row justify-content-center">
+
+                <ul class="pagination flex-wrap ">
+
+                    <li class="page-item">
+                        <a class="btn btn-success @Model.PaginationInfo.Previous"
+                           asp-route-PredmetsFilterApplied="@Model.PredmetsFilterApplied"
+                           asp-route-PartsFilterApplied="@Model.PartsFilterApplied"
+                            asp-route-TestsFilterApplied="@Model.TestsFilterApplied"
+                           asp-action="Index" asp-route-page1="@(Model.PaginationInfo.ActualPage - 1)">
+                            <i class="fa fa-chevron-circle-left"></i>
+                            Oldinga
+                        </a>
+                    </li>
+                    @for (int item = 0; item < Model.PaginationInfo.TotalPages; item++)
+                    {
+                        var i = item + 1;
+
+                        if (Model.PaginationInfo.ActualPage == item)
+                        {
+                            <li class="page-item  active ">
+                                <a asp-action="Index"
+                                   asp-route-PredmetsFilterApplied="@Model.PredmetsFilterApplied"
+                                   asp-route-PartsFilterApplied="@Model.PartsFilterApplied"
+                                     asp-route-TestsFilterApplied="@Model.TestsFilterApplied"
+                                   asp-route-page1="@item" class="page-link">@i</a>
+                            </li>
+
+
+                        }
+                        else
+                        {
+                            <li class="page-item  ">
+                                <a asp-action="Index"
+                                   asp-route-PredmetsFilterApplied="@Model.PredmetsFilterApplied"
+                                   asp-route-PartsFilterApplied="@Model.PartsFilterApplied"
+                                     asp-route-TestsFilterApplied="@Model.TestsFilterApplied"
+                                   asp-route-page1="@item" class="page-link">@i</a>
+                            </li>
+                        }
+
+
+
+
+                    }
+
+                    <li class="page-item">
+                        <a class="btn btn-success @Model.PaginationInfo.Next"
+                           asp-action="Index"
+                           asp-route-PredmetsFilterApplied="@Model.PredmetsFilterApplied"
+                           asp-route-PartsFilterApplied="@Model.PartsFilterApplied"
+                             asp-route-TestsFilterApplied="@Model.TestsFilterApplied"
+                           asp-route-page1="@(Model.PaginationInfo.ActualPage + 1)">
+                            Keyinga <i class="fa fa-chevron-circle-right"></i>
+                        </a>
+                    </li>
+                </ul>
+
+
+            </div>
+
+ 
+
+
+            <div class="row" style="margin:10px">
+                <table class="table table-sm padd1">
+                    <thead>
+                        <tr>
+
+                            <th>Testdan o'tuvchi</th>
+                            
+                            <th>Test Nomi</th>
+                            
+
+                            <th> Foizda</th>
+                            <th> Natija</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Users)
+                        {
+                            var i = 0;
+
+                            <tr class="@item.Natijalar" >
+
+                                <td style="width:22rem;"><a asp-area="TestsSchools" asp-action="Result" asp-controller="Home" asp-route-ExamID="@item.ExamID">@item.FISH</a></td>
+                                
+                                <td>@item.TestNomi</td>
+                                
+
+
+                                <td>@string.Format("{0:0.##}", item.Foiz)      </td>
+
+
+                                <td>@item.Natija</td>
+
+                            
+                            </tr>
+                            <tr class="@item.Natijalar" style="border-bottom:2px solid #000000">
+                                <td colspan="5">
+                                    @foreach (var k in item.Answered)
+                                    {
+                                        i++;
+                                        var t = i - 1;
+                                        var r = "test" + t.ToString();
+                                       
+                                        <a href="r" class=" btn-sm @k" style="margin:0 0.1rem 0 0.1rem"> @i </a>
+                                       
+
+
+                                    }
+
+
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+
+             
+            </div>
+
+
+
+
+
+
+   
+
+
+    </form>
+}
+else
+{<div class="container ">
+        <div class="esh-catalog-items row">
+            SIZNING SO'ROVINGIZ BO'YICHA HECH QANDAY NATIJA TOPILMADI
+        </div>
+    </div>
+}
+
+
+@section scripts{
+  
+
+      
+
+}

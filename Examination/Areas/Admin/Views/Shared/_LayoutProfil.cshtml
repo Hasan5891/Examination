@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml"; 
+}
+
+<h1>Foydalanuvchi  yozuvini boshqarish</h1>
+
+<div >
+    <h4>Foydalanuvchi yozuvingizni o'zgartirish</h4>
+    <hr />
+    <div class="row" >
+        <div class="col-2" style="min-height:600px;padding:0">
+            <partial name="_ManageNav" />
+        </div>
+        <div class="col-10 justify-content-center" style="padding:2px">
+            
+            @RenderBody()
+              
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

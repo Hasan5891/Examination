@@ -1,0 +1,121 @@
+﻿@model Examination.Data.Test
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var modalID = "myModal";
+    var areaModalID = "edit-question-line-label";
+}
+
+
+    <div class="text-md-center" style="border-bottom:1px solid;margin-bottom:0;">
+        <h1>Test savolini tahrirlash</h1>
+    </div><hr />
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Edit" class="form-inline">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ID" style="background-color:#fbfaec" />
+                <div class="form-group col-sm-3">
+                    <label class="control-label col-sm-3 justify-content-end">Test nomi</label>
+                    <input asp-for="Nomi" class="form-control col-sm-9" style="background-color:#fbfaec;border-color:#fff;font-size:1.2rem" />
+                    <span asp-validation-for="Nomi" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm-3">
+                    <label asp-for="Part.Nomi" class="control-label col-sm-3 justify-content-end">Bo'lim</label>
+                    <select name="PartID" class="form-control col-sm-9" style="background-color:#fbfaec;border-color:#fff;font-size:1.2rem" asp-items="@ViewBag.Parts"></select>
+                    <span asp-validation-for="Part.Predmet.Nomi" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm-1">
+                    <input asp-for="isactive" type="checkbox" style="height:4rem;width:1.1rem" class="checkbox"><span style="padding-left:0.5rem"> Faolligi</span>
+                </div>
+                <div class="form-group col-sm-3">
+                    <label asp-for="Description">Test mazmuni</label>
+                    <textarea asp-for="Description" class="form-control col-sm-12" rows="3"></textarea>
+                </div>
+                <div class="form-group col-sm-1 justify-content-center">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+   
+        <div class="justify-content-end" style="margin-left:45%;margin-bottom:4px">
+            <a id="createLine" asp-action="EditQuestion" asp-route-TestID="@Model.ID" class="btn-primary btn-lg" data-target="#@modalID" data-toggle="modal" data-backdrop="static" data-keyboard="false">
+                <i class="fa fa-plus"></i> Qo'shish
+            </a>
+        </div>
+        <table class="table" id="Parts" style="margin-top:10.0rem">
+            <thead class="thead-light">
+                <tr>
+                    <th>Savol mazmuni</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+        </table>
+
+        <div>
+
+            <a class="justify-content-center align-items-center " asp-action="Index">
+                <i class="fa fa-3x fa-arrow-circle-o-left"></i>
+            </a>
+        </div>
+
+
+
+  
+    @await Html.PartialAsync("_Modal", new Modal
+    {
+        ID = modalID,
+        AreaLabelID = areaModalID,
+        Size = ModalSize.Large
+    })
+
+
+
+@section scripts{
+
+
+    @{await Html.RenderPartialAsync("_ModalScriptsInit", modalID);}
+    <script src="~/DataTables-1.10.20/media/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var Otable = $("#Parts").DataTable({
+
+                        "ajax": {
+                            "url": "@Url.Action("GetQuestions","Home",new { id=Model.ID})",
+                            "type": "get",
+                            "datatype": "json"
+                        },
+                "columnDefs": [
+                    {
+
+                        targets: -1,
+                        className: 'justify-content-center align-items-center',
+                        "orderable": false,
+                        width: '20%'
+                    }],
+                        "columns": [
+
+                            { "data": "nomi", "autoWidth": true },
+                            { "data": "id", "render": function (data) {
+
+                                    var edit = "@Url.Action("EditQuestion","Home")?id="+data;
+                                     var delet = "@Url.Action("DeleteQuestions","Home")?id="+data;
+                                     return  "<a href='"+edit+"'class='btn btn-success' data-target='#@modalID' data-toggle='modal'data-backdrop='static' data-keyboard='false'> <i class='fa fa-edit'>Tahrirlash</i></a> <a href='"+delet+"'class='btn btn-danger' data-target='#@modalID' data-toggle='modal' data-backdrop='static' data-keyboard='false'> <i class='fa fa-remove'> O'chirish</i></a>";
+                                } },
+                        ],
+
+                 paging: true,
+                        lengthChange: true,
+                        searching: true,
+                        ordering: true
+                  })
+                });
+    </script>
+
+
+}

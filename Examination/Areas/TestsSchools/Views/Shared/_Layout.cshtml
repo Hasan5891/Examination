@@ -1,0 +1,85 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Examination.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Examination</title>
+
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css">
+    <link href="~/lib/materialize/iconfont/material-icons.css" rel="stylesheet" />
+    <link href="~/lib/materialize/css/materialize.min.css" rel="stylesheet" />
+    <link href="~/lib/materialize/css/style.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/catalog/pager.css" />
+    <link rel="stylesheet" href="~/css/catalog/catalog.component.min.css" />
+    <link rel="stylesheet" href="~/css/site.min.css" />
+    <link href="~/lib/AT/at.min.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/materialize/js/materialize.min.js"></script>
+    <script src="~/lib/materialize/js/init.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+</head>
+<body>
+
+    <header>
+
+        <nav role="navigation" style="background:#fff">
+
+            <div class=" container center">
+
+
+
+                <a id="logo-container" asp-area="" asp-controller="Home" asp-action="Index" style="font-size:1.8rem;font-weight:700"> Examination.uz</a>
+
+
+
+            </div>
+
+
+        </nav>
+
+    </header>
+
+    <div class="progress fixed " id="load">
+        <div class="indeterminate"></div>
+    </div>
+    <section class="content" id="Ajax">
+
+        @RenderBody()
+
+    </section>
+    <footer class="page-footer blue-grey darken-3">
+
+        <div class="footer-copyright">
+            <div class="container">
+                &copy; 2019 - Examination -  <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> Software Developer-ISLAMOV HASAN
+            </div>
+        </div>
+    </footer>
+
+    @*<footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2019 - Examination -  <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> Software Developer-ISLAMOV HASAN
+            </div>
+        </footer>*@
+
+
+
+
+
+
+   
+
+    <script src="~/js/util.js"></script>
+    <script src="~/js/tab.js"></script>
+
+    <script src="~/lib/jquery/dist/jquery.unobtrusive-ajax.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

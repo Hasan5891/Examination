@@ -1,0 +1,94 @@
+﻿@model Examination.Data.Test
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+
+<div class="row">
+    <div class="col s10 m6 l4 s6 offset-s1 offset-m3 offset-l4">
+
+        <div id="modal" class="modal">
+
+            <div class="modal-content">
+                <h4>Testga kirish</h4>
+                <div class="col s12">
+                    <form data-ajax="true" data-ajax-method="get" data-ajax-url="@Url.Action("Begin","Home",new { area = "TestsSchools"})" data-ajax-update="#Ajax" data-ajax-begin="ChekingTest" data-ajax-failure="failure" data-ajax-loading="#spinner">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input name="TestID" asp-for="ID" data-val-required="Test ID raqamini kiritish talab etiladi">
+                                <label asp-for="ID">Test id raqami</label>
+                                <span class="red-text helper-text" data-valmsg-replace="true" data-valmsg-for="TestID"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input name="UserName" id="UserName" type="text"  data-val="true" data-val-required="Ma'lumotni kiritish talab etiladi">
+                                <label for="UserName">Ism va Sharifingiz</label>
+                                <span class="red-text helper-text" data-valmsg-replace="true" data-valmsg-for="UserName"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="validation-message center" id="validation-message" style="display: flex;"></div>
+                        </div>
+                        <div class="input-field col s6">
+                            <button type="submit" class="waves-effect waves-light btn">Kirish</button>
+                            <span id='spinner' style='display:none;'><i class='fa fa-spinner fa-spin'></i></span>
+                        </div>
+
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+@section scripts{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.modal').modal({
+                endingTop:"30%",
+                dismissible: false,
+                onCloseEnd: function () {
+                    $('.modal').html("");
+                }
+            }).modal("open");
+
+        });
+
+        function failure(xhr) {
+
+             $("#validation-message").first().html("<i class='material-icons red-text'>error_outline</i>  Status:"+xhr.status+", Matni:"+xhr.statusText);
+        }
+        function ChekingTest(xhr) {
+
+            var id = $("#TestID").val();
+                        @*$.ajax({
+            method: "POST",
+        url: "@Url.Action("CheckTest","Home",new { area = "TestsSchools"})",
+                data: {id: id},
+                success: function (result) {
+                    if(!result.status){
+                        xhr.abort();
+
+                        $("#validation-message").first().html("<i class='material-icons'>error_outline</i> Test topilmadi");
+
+                    }
+
+    }
+});*@
+        }
+
+    </script>
+
+
+
+
+
+}

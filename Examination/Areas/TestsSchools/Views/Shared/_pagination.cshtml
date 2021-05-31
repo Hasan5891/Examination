@@ -1,0 +1,39 @@
+﻿@model PaginationInfoViewModel
+<div class="container-fluid">
+<div class="esh-pager">
+	
+    <div class="esh-pager-wrapper row">
+      
+            <div class="col s1 m2 l2 xl2">
+
+                <a class="esh-pager-item-left esh-pager-item--navigable btn btn-success @Model.Previous"
+                   id="Previous"
+                     aria-label="Previous" href="" data-ajax="true" data-ajax-url="@Url.Action("Index", new { area = "TestsSchools",page1=Model.ActualPage - 1 ,PartFilterApplied=ViewBag.PartFilterApplied,PredmetsFilterApplied=ViewBag.PredmetsFilterApplied})" data-ajax-update="#Ajax" data-ajax-loading="#load">
+                    <i class="fa fa-chevron-circle-left"></i>
+                    
+                </a>
+            </div>
+
+            <div class="col m8 l8 xl8 hide-on-small-only ">
+                <span class="esh-pager-item">
+                    @Model.TotalItems  testlardan   @Model.ItemsPerPage tasi ko'rsatildi - Sahifa @(Model.ActualPage + 1)/@Model.TotalPages
+                </span>
+                
+            </div>
+
+
+
+            <div class="col s1 m2 l2  xl2 offset-s10">
+                <a class="esh-pager-item-right esh-pager-item--navigable btn btn-success @Model.Next"
+                   id="Next"
+                   aria-label="Next"  data-ajax="true" data-ajax-url="@Url.Action("Index",new { area = "TestsSchools",page1=Model.ActualPage +1 ,PartFilterApplied=ViewBag.PartFilterApplied,PredmetsFilterApplied=ViewBag.PredmetsFilterApplied})" data-ajax-update="#Ajax" data-ajax-loading="#load">
+                   <i class="fa fa-chevron-circle-right"></i>
+
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+ 
+

@@ -1,0 +1,137 @@
+﻿
+@{ Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+}
+    
+  
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-inline">
+
+
+            <div class="form-group col-sm-4">
+                <label>Bo'lim(sayt)</label>
+                <select name="PartID" class="form-control col-sm-9" style="background-color:#fbfaec;border-color:#fff;font-size:1.2rem" asp-items="@ViewBag.Parts"></select>
+
+            </div>
+
+            <div class="form-group col-sm-1">
+                <i class="fa fa-2x fa-clone" aria-hidden="true"></i>
+            </div>
+
+            <div class="form-group col-sm-4">
+                <label>Bo'lim(localhost)</label>
+                <select name="PartID1" onchange="Select(this)" class="form-control col-sm-9" style="background-color:#fbfaec;border-color:#fff;font-size:1.2rem" asp-items="@ViewBag.Parts1"></select>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<h1 class="text-center">Testni localhostdan ko'chirish</h1>
+
+<table class="table" id="Tests">
+    <thead class="thead-light">
+        <tr>
+
+            <th>
+                Test nomi
+            </th>
+            <th>
+                Fan
+            </th>
+            <th>
+                Savollar soni
+            </th>
+            <th>
+
+            </th>
+
+
+        </tr>
+    </thead>
+
+</table>
+
+
+
+
+@section scripts{
+
+    <script src="~/js/sweetalert2.min.js"></script>
+
+    <script src="~/DataTables-1.10.20/media/js/jquery.dataTables.min.js"></script>
+
+    <script>
+            function Send(sender) {
+                $(sender).children().children().removeClass('d-none');
+            };
+            function RefreshItem(selected,sender) {
+                 $(sender).children().children().addClass('d-none');
+                Swal.fire('Test muffaqiyatli kochirildi','','success');
+                $("#Tests").DataTable().ajax.url('@Url.Action("GetTest")?id=' + selected).load();
+                console.log("Refresh");
+            };
+            function Select(sender) {
+                var selected = $(sender).children("option:selected").val();
+                if ($.fn.DataTable.isDataTable("#Tests")) {
+
+                    $("#Tests").DataTable().ajax.url('@Url.Action("GetTest")?id=' + selected).load();
+
+                }
+                else {
+                    $("#Tests").DataTable({
+
+                        "ajax": {
+                            url: "@Url.Action("GetTest")?id=" + selected,
+                            "type": "get",
+                            "datatype": "json"
+                        },
+                        "columnDefs": [
+                            {
+
+                                targets: -1,
+                                className: 'justify-content-center align-items-center',
+                                "orderable": false,
+                                width: '20%'
+                            }],
+                        "columns": [
+
+                            { "data": "nomi", "autoWidth": false },
+                            { "data": "predmet" },
+                            { "data": "savol" },
+                            {
+                                "data": "m", "render": function (data) {
+
+                                   
+                                    var selected1 = $("select[name=PartID").children("option:selected").val();
+                                    var action = "@Url.Action("Create")?id=" + data.id + "&&partid=" + selected1;
+                                    return "<form name='ajaxform'action='" + action + "' data-ajax='true' method='post'data-ajax-loading='#spinner' data-ajax-success='RefreshItem(" + selected + ",this)'>  <button type='submit' class='btn btn-sm btn-danger  d-md-inline-block'>  Ko'chirish</button><span id='spinner' style='display:none;'><i class='fa fa-spinner fa-spin'></i></span>";
+                                },
+
+
+                            },
+
+                        ],
+
+                        paging: true,
+                        lengthChange: true,
+                        searching: true,
+                        ordering: true
+                    })
+
+                }
+
+
+
+            }
+
+
+    </script>
+
+
+
+
+}
+

@@ -1,0 +1,21 @@
+﻿@model IList<QuestionItem>
+@for (int item = 0; item < Model.Count(); item++)
+{
+    var i = item + 1;
+   var r = "test" + item.ToString();
+    var cl = (item == 0) ? "active" : "";
+    var cl1 = (Model[item].AnswerID != null) ? "nav-link1" : "nav-link";
+
+    <li class="nav-item ">
+        <a href="#@r" class="@cl1 @cl" data-toggle="tab" data-page="@i" onclick="Tab(this)"> @i  </a>
+
+    </li>
+   }
+
+<li class="page-item">
+
+    <button type="submit" class="waves-effect nav-link bt red accent-4 white-text">
+        Tugatish <i class="fa fa-clone"></i>
+    </button>
+</li>
+

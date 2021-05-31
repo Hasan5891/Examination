@@ -1,0 +1,254 @@
+﻿@model TestAnswerModel
+
+@{
+    ViewData["Title"] = "Test";
+
+}
+
+<link href="~/lib/AT/at.min.css" rel="stylesheet" />
+<div class=" center" style="border-bottom:1px solid;margin-bottom:0;">
+    <h2>Test Natijalari</h2>
+</div>
+@if (Model.Questions != null)
+{<form asp-action="Test" asp-controller="Home" method="post" id="form">
+
+        <div class="container ">
+
+
+            <div class="row justify-content-center ">
+
+                <ul class="nav nav-tabs justify-content-center" id="navigation-test1">
+
+
+                    @for (int item = 0; item < Model.Questions.Count(); item++)
+                    {
+                        var i = item + 1;
+                        var r = "test" + item.ToString();
+                        var cl = (item == 0) ? "active" : "";
+                        var cl1 = "nav-link";
+                        @if (Model.Questions[item].Answer != null)
+                        {
+                            cl1 = (Model.Questions[item].Answer.isTrue) ? "nav-link green accent-3 white-text" : "nav-link red white-text";
+                        }
+
+                        <li class="nav-item">
+                            <a href="#@r" class="@cl1 @cl" data-toggle="tab"> @i </a>
+                        </li>
+
+
+
+                    }
+
+
+
+
+                </ul>
+
+
+            </div>
+
+        </div>
+        <div class="row" style="margin:10px">
+
+            <table class="table-responsive">
+                <thead>
+                    <tr>
+                        <th class="col s2 m2 l2 xl2 hide-on-med-and-down">Fan nomi</th>
+                        <th class="col s2 m2 l2 xl2">Test nomi</th>
+                        <th class="col s2 m2 l2 xl2 hide-on-med-and-down">Testdan o'tuvchi</th>
+                        <th class="col s2 m2 l1 xl1">Savollar soni</th>
+                        <th class="col s2 m2 l1 xl1">To'g'ri javoblar</th>
+                        <th class="col s2 m2 l1 xl1">Noto'gri javoblar</th>
+                        <th class="col s2 m2 l1 xl1"> Foiz hisobida</th>
+                        <th class="col s2 m2 l2 xl2"> Natija</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="@Model.Natijalar">
+                        <td class="col s2 m2 l2 xl2 hide-on-med-and-down">@Model.Predmet</td>
+                        <td class="col s2 m2 l2 xl2">@Model.Test</td>
+                        <td class="col s2 m2 l2 xl2 hide-on-med-and-down">@Model.FISH</td>
+                        <td class="col s2 m2 l1 xl1">@Model.Soni</td>
+                        <td class="col s2 m2 l1 xl1">@Model.T</td>
+                        <td class="col s2 m2 l1 xl1">@Model.N</td>
+
+                        <td class="col s2 m2 l1 xl1">@string.Format("{0:0.##}", Model.Foiz)      </td>
+
+                        <td class="col s2 m2 l2 xl2">@Model.Natija</td>
+
+
+
+
+
+
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+
+        <div class="tab-content">
+
+
+            @for (int j = 0; j < Model.Questions.Count(); j++)
+            {
+                Variant A = Variant.A;
+                var r = "test" + j.ToString();
+                var c2 = (j == 0) ? "active show" : "";
+
+                <div class="tab-pane fade @c2" id="@r">
+                    <div class="container" style="background-color:#f5efef;max-width:100%; margin-bottom:30px">
+
+
+                        <div class="questions1">
+                            <label data-question-number="@(j+1)" style="border-bottom:1px solid;margin-bottom:0;">Savol</label>
+                            <input type="hidden" asp-for="@Model.Questions[j].QuestionID " value="@Model.Questions[j].QuestionID" />
+                            <div style="background-color:white;padding:10px 40px;">@Html.Raw(Model.Questions[j].Nomi)</div>
+
+                        </div>
+
+                        @if (@Model.Questions[j].Answers != null)
+                        {
+
+                            <div class="questions">
+                                @for (int k = 0; k < Model.Questions[j].Answers.Count(); k++)
+                                {
+
+
+
+                                    if (Model.Questions[j].AnswerID == Model.Questions[j].Answers[k].ID)
+                                    {
+
+                                        if (Model.Questions[j].Answer.isTrue)
+                                        {<div class="questions__question">
+                                             
+                                                <input disabled type="radio" asp-for="Questions[j].AnswerID" id="@Model.Questions[j].Answers[k].ID" value="@Model.Questions[j].Answers[k].ID" checked>
+                                                <label class="AnswerSelectTrue" for="@Model.Questions[j].Answers[k].ID" data-question-number=@A>
+
+                                                    <span>
+                                                        @Html.Raw(Model.Questions[j].Answers[k].Nomi)
+                                                    </span>
+
+                                                </label>
+
+                                            </div>
+
+                                        }
+                                        else
+                                        {
+                                            //<div class="questions3">
+                                            <div class="questions__question">
+                                                <input disabled type="radio" asp-for="Questions[j].AnswerID" id="@Model.Questions[j].Answers[k].ID" value="@Model.Questions[j].Answers[k].ID" checked>
+                                                <label class="AnswerSelectFalse" for="@Model.Questions[j].Answers[k].ID" data-question-number=@A>
+                                                    <span>
+                                                        @Html.Raw(Model.Questions[j].Answers[k].Nomi)
+                                                    </span>
+
+                                                </label>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="questions__question">
+                                            <input disabled type="radio" onclick="post1(this);" asp-for="Questions[j].AnswerID" id="@Model.Questions[j].Answers[k].ID" value="@Model.Questions[j].Answers[k].ID">
+                                            <label for="@Model.Questions[j].Answers[k].ID" data-question-number=@A>
+                                                <span>
+                                                    @Html.Raw(Model.Questions[j].Answers[k].Nomi)
+                                                </span>
+
+                                            </label>
+                                        </div>
+                                    }
+
+                                    A++;
+
+                                }
+                            </div>
+                            @if (Model.Questions[j].Answer != null)
+                            {
+                                @if (Model.Questions[j].Answer.isTrue)
+                                {<div class="questions__question" style="background-color:white">
+                                        <div class="alert alert-success center-align">
+                                            <p class="text-success">
+
+                                                <i class="fa fa-check-circle" size:7x></i> To'gri
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                }
+                                else
+                                {<div class="questions__question" style="background-color:white">
+                                        <div class="alert alert-danger center-align">
+                                            <p class="text-danger">
+
+                                                <i class="fa fa-close" size:7x></i>  Noto'gri
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="questions__question" style="background-color:white">
+                                    <div class="alert alert-warning center-align">
+                                        <p class="text-danger">
+
+                                            <i class="fa fa-close" size:7x></i>  Belgilanmagan
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                            }
+
+
+                        }
+
+
+
+
+                    </div>
+                </div>
+
+            }
+
+
+
+
+        </div>
+
+
+    </form>
+
+}
+else
+{<div class="container ">
+        <div class="esh-catalog-items row">
+            SIZNING SO'ROVINGIZ BO'YICHA HECH QANDAY NATIJA TOPILMADI
+        </div>
+    </div>
+}
+
+
+<script type="text/javascript">
+    function post1(sender) {
+
+
+        document.getElementById('form').submit();
+
+    }
+
+    function post(sender) {
+
+        $('#page').val($(sender).data('page'));
+        document.getElementById('form').submit();
+
+    }
+
+</script>

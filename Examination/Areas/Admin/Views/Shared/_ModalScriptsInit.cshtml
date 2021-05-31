@@ -1,0 +1,42 @@
+﻿@model string
+  
+    
+    <script src="~/popper.js/1.16.0/content/Scripts/umd/popper.min.js"></script>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/summernote-0.8.16-dist/summernote-bs4.js"></script>
+<script src="~/lib/summernote-math.js"></script>
+<script>
+    $(document).ready(function () {
+
+          (function ($) {
+        $("#@Model").on("shown.bs.modal", function (event) {
+                var button = $(event.relatedTarget);
+        var url = button.attr("href");
+        var obj = this;
+             $.ajax({
+        method: "Get",
+        url: url,
+                 success: function (result) {
+                   result = result.replace(/[\r\n]+/gm, "" );
+
+            $(obj).find(".modal-content").append(result);
+
+       }
+        });
+
+        })
+        $("#@Model").on("hidden.bs.modal", function (e) {
+        $("#quetion").summernote("destroy");
+        $(this).removeData("bs.modal");
+        $("#@Model  .modal-content").empty();
+
+        })
+
+
+          }(jQuery))
+              });
+</script>
+
+
+

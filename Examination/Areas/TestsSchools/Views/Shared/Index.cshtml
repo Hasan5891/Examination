@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    @model CatalogTestIndexViewModel
+
+}
+
+
+
+<section class="esh-catalog-filters z-depth-3" style="margin-top:5px; line-height:inherit;font-family:inherit;font-weight:700; border-radius: 20px ;">
+
+    <div class="container">
+        <form data-ajax="true" data-ajax-method="post" data-ajax-url="@Url.Action("Index",new { area = "TestsSchools" })" data-ajax-update="#Ajax" data-ajax-loading="#load">
+            <div class="row ">
+                <div class="input-field col s9 m8 l6 xl5 offset-xl3 offset-l3 offset-m2">
+                    <input type="hidden" asp-for="PredmetsFilterApplied" />
+
+                    <select asp-for="@Model.PartFilterApplied" asp-items="@Model.Parts"></select>
+                    <label class="esh-label">Bo'limlar(@Model.Predmet)</label>
+                </div>
+
+
+
+                <div class="input-field col s1 m1 l1 xl1">
+                    <button class="btn waves-effect waves-light" type="submit">
+                        <i style="font-size: 30px" class="large material-icons center">search</i>
+                    </button>
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+</section>
+
+<div class="container-fluid padding-bottom  ">
+
+    @if (Model.CatalogItems.Any())
+    {
+        @await Html.PartialAsync("_pagination", Model.PaginationInfo)
+
+        <div class="row animated fadeInDown center-align centered" style="min-height:50vh;">
+            @foreach (var catalogItem in Model.CatalogItems)
+            {
+                <div class=" col s10 m6 l4 xl3">
+                    @await Html.PartialAsync("_product", catalogItem)
+                </div>
+            }
+        </div>
+
+        @await Html.PartialAsync("_pagination", Model.PaginationInfo)
+    }
+    else
+    {
+        <div class="esh-catalog-items row">
+            SIZNING SO'ROVINGIZ BO'YICHA HECH QANDAY NATIJA TOPILMADI
+        </div>
+    }
+</div>
+
+
+
+<script src="~/js/site.js"></script>

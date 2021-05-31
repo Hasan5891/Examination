@@ -1,0 +1,143 @@
+﻿@using Examination.Data
+@model Examination.Areas.TestsSchools.Models.SideNaavModel
+@using Microsoft.AspNetCore.Identity
+@using System.IO
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+    <ul id="slide-out" class="sidenav">
+
+        <li><a class="btn-close sidenav-close"><i class="material-icons " style="font-size: 30px">close</i></a></li>
+        @if (SignInManager.IsSignedIn(User))
+        {
+
+
+            <li class="user-li active">
+                <div class="user-view">
+
+
+
+                    @{
+                        var user = UserManager.GetUserAsync(User);
+                        if (user.Result.photo_url == null)
+                        {
+                            string imgPath = $"{Directory.GetCurrentDirectory()}{@"\wwwroot\img\avatar_2x.png"}";
+                            // Convert image to byte array
+                            byte[] byteData = System.IO.File.ReadAllBytes(imgPath);
+                            //Convert byte arry to base64string
+                            string imreBase64Data = Convert.ToBase64String(byteData);
+                            string imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                            //Passing image data in viewbag to view
+                            <div>
+                                <img src="@imgDataURL" width="48" class="circle" alt="User Image" />
+                            </div>
+                        }
+                        else
+                        {
+
+                            <div>
+                                <img src="@user.Result.photo_url" width="48" class="circle" alt="User Image" />
+                            </div>
+
+                        }
+                    }
+
+
+                </div>
+            </li>
+            <li class="teal">
+                <ul class="collapsible collapsible-accordion">
+                    <li>
+                        <a class="collapsible-header white-text waves-effect waves-blue">@user.Result.FISH <i class="material-icons right white-text" style="margin-right:0;">expand_more</i></a>
+                        <div class="collapsible-body z-depth-3" style="display: block;">
+                            <ul>
+                                <li>
+                                    <a class="waves-effect waves-blue sidenav-close" href="" data-ajax="true" data-ajax-url="@Url.Action("Index","Profile", new { area = "Admin" })" data-ajax-update="#Ajax" data-ajax-loading="#load">
+                                        <i class="material-icons "> account_circle</i>Mening profilim
+
+                                    </a>
+
+                                </li>
+                                <li><a class="waves-effect waves-blue sidenav-close" href="" data-ajax="true" data-ajax-url="@Url.Action("Password","Profile", new { area = "Admin" })" data-ajax-update="#Ajax" data-ajax-loading="#load"><i class="material-icons "> lock</i>Parolim</a></li>
+                                <li>
+                                    <a class="waves-effect waves-blue sidenav-close" href="" data-ajax="true" data-ajax-url="@Url.Action("MyResult","Profile", new { area = "Admin" })" data-ajax-update="#Ajax" data-ajax-loading="#load"><i class="material-icons "> grid_on</i>Mening natijalarim</a>
+                                </li>
+                                <li>
+                                    <a class="waves-effect waves-blue sidenav-close" href="" data-ajax="true" data-ajax-url="@Url.Action("MyResultA","Profile", new { area = "Admin" })" data-ajax-update="#Ajax" data-ajax-loading="#load"><i class="material-icons "> grid_on</i>Mening natijalarim</a>
+                                </li>
+                                <li>
+                                    <a class="waves-effect waves-blue" asp-area="Admin" asp-controller="Profile" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                        <i class="material-icons ">exit_to_app</i>
+                                        Chiqish
+                                    </a>
+
+                                <li><div class="divider"></div></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        }
+        <li class="bold"><a class="sidenav-close" data-ajax="true" data-ajax-url="@Url.Action("Index","Home", new { area = "" })" data-ajax-update="#Ajax" data-ajax-loading="#load"><i class="material-icons ">home</i>Home</a></li>
+        <li class="divider"></li>
+        <li>
+            <ul class="collapsible collapsible-accordion">
+                <li class="bold">
+                    <a tabindex="0" class="collapsible-header waves-effect waves-teal"><i class="material-icons">arrow_drop_down</i>Umumta'lim fanlari</a>
+                    <div class="collapsible-body">
+                        <ul>
+                            <li>
+
+                                <ul class="collapsible collapsible-accordion">
+
+
+                                    @foreach (var item in Model.Predmets)
+                                    {
+                                        <li>
+                                            <a tabindex="0" style="font-weight:bold" class="bold teal-text collapsible-header waves-effect waves-teal"><i class="material-icons">arrow_drop_down</i>@item.Nomi</a>
+                                            <div class="collapsible-body">
+                                                <ul>
+                                                    @foreach (var part in item.Parts)
+                                                    {
+                                                        <li>
+                                                    <a data-ajax="true" data-ajax-url="@Url.Action("Index","Home", 
+                                                    new { area = "TestsSchools", PartFilterApplied=part.ID,PredmetsFilterApplied=item.ID})" 
+                                                       data-ajax-update="#Ajax" data-ajax-loading="#load">
+                                                            <i class="material-icons">navigate_next</i>@part.Nomi</a></li>
+
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </li>
+
+                                    }
+
+
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+
+
+                <li class="bold">
+                    <a tabindex="0" class="collapsible-header waves-effect waves-teal"><i class="material-icons">arrow_drop_down</i>Abiturinentlarga</a>
+                    <div class="collapsible-body">
+                        <ul>
+                            @foreach (var item in Model.AParts)
+                            {<li>
+                                <a data-ajax="true" data-ajax-url="@Url.Action("Index","Abiturient", 
+                                                    new { area = "TestsSchools", PartFilterApplied=item.ID})" 
+                                                       data-ajax-update="#Ajax" data-ajax-loading="#load">
+                                                            <i class="material-icons">navigate_next</i>@item.Nomi</a></li>
+                               
+                            }
+                            </ul>
+                    </div>
+                </li>
+            </ul>
+
+        </li>
+
+
+    </ul>

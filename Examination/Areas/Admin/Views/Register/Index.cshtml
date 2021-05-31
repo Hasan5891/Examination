@@ -1,0 +1,79 @@
+﻿@model RegisterModel
+@{
+    ViewData["Title"] = "Profil";
+    Layout = "~/Areas/TestsSchools/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container-fluid padding-bottom">
+    <div class="card">
+        <form asp-action="Create" method="post">
+            <input asp-for="ReturnUrl" type="hidden" />
+            <div class="card-content">
+                <span class="card-title grey-text text-darken-2 center">Ro'yhatdan o'tishdaasad</span>
+
+                <div class="row">
+                    <div asp-validation-summary="All" class="red-text center"></div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12 m8 l6 xl4 offset-m2 offset-l3 offset-xl4  require">
+                        <i class="material-icons prefix">account_box</i>
+                        <input asp-for="UserName" type="text"  />
+                        <label for="Username">Login </label>
+                        <span asp-validation-for="UserName" class="red-text helper-text"></span>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 m8 l6 xl4 offset-m2 offset-l3 offset-xl4 required">
+                        <i class="material-icons prefix">account_box</i>
+                        <input asp-for="FISH" type="text" />
+                        <label asp-for="FISH">Familiya va Ismingiz </label>
+                        <span asp-validation-for="FISH" class="red-text helper-text"></span>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row">
+                    <div class="input-field col s12 m8 l6 xl4 offset-m2 offset-l3 offset-xl4  require">
+                        <i class="material-icons prefix">lock   </i>
+                        <input asp-for="Password" type="password" />
+                        <label asp-for="Password"> </label>
+                        <span asp-validation-for="Password" class="red-text helper-text"></span>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12 m8 l6 xl4 offset-m2 offset-l3 offset-xl4  require">
+                        <i class="material-icons prefix">repeat  </i>
+                        <input asp-for="ConfirmPassword" type="password" />
+                        <label asp-for="ConfirmPassword"> </label>
+                        <span asp-validation-for="ConfirmPassword" class="red-text helper-text"></span>
+                    </div>
+                </div>
+               
+               
+                <div class="row">
+                    <div class="input-field col s12 m8 l6 xl4 offset-m2 offset-l3 offset-xl4 center required">
+                        <button class="waves-effect waves-light btn" type="submit">  <i class="fa fa-registered"></i>   Ro'yhatdan o'tish</button>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,241 @@
+﻿@model TestAnswerModel
+
+@{
+    ViewData["Title"] = Model.Predmet + "fanidan test(" + Model.Test + ")";
+
+}
+<link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+<form data-ajax="true" data-ajax-method="post" data-ajax-url="@Url.Action("Test","Home",new { area = "TestsSchools"})"
+      data-ajax-update="#Ajax" data-ajax-loading="#load" data-ajax-failure="failureTest" method="post" id="form">
+
+    <input type="hidden" name="ExamID" value="@Model.ExamID" />
+    <div class="row justify-content-center">
+        <ul class="nav nav-tabs  justify-content-center" id="navigation-test1" ar>
+
+            @await Html.PartialAsync("~/Areas/TestsSchools/Views/Shared/nav-tabs.cshtml", Model.Questions)
+
+
+        </ul>
+
+    </div>
+
+    <div class="center ">
+        <p>
+            <span class="text-info">Fan nomi: </span>@Model.Predmet | <span class="text-info">Testdan o'tuvchi:</span>
+            @Model.FISH
+        </p>
+    </div>
+
+    <div class="tab-content">
+        @for (int j = 0; j < Model.Questions.Count(); j++)
+        {
+            Variant A = Variant.A;
+
+            var r = "test" + j.ToString();
+            var cl = (j == 0) ? "active show" : "";
+
+            <div class="tab-pane fade @cl" id="@r">
+
+                <div class="container">
+
+
+                    <div class="questions1">
+                        <label data-question-number="@(j+1)" style="border-bottom:1px solid;margin-bottom:0;">Savol</label>
+                        <input type="hidden" data-id="@j" asp-for="@Model.Questions[j].QuestionID " value="@Model.Questions[j].QuestionID" />
+                        <div style="background-color:white;padding:10px 40px 25px 40px;">@Html.Raw(Model.Questions[j].Nomi)</div>
+                    </div>
+                    @if (@Model.Questions[j].Answers != null)
+                    {
+
+                        <div class="questions">
+                            @for (int k = 0; k < Model.Questions[j].Answers.Count(); k++)
+                            {
+                                var idA = j.ToString() + k.ToString();
+
+
+                                if (Model.Questions[j].AnswerID == Model.Questions[j].Answers[k].ID)
+                                {
+
+                                    <div class="questions__question">
+                                        <input type="radio" onclick="post1(this);" asp-for="Questions[j].AnswerID" id="@idA" value="@Model.Questions[j].Answers[k].ID" checked>
+
+                                        <label for="@idA" data-question-number=@A>
+
+                                            @Html.Raw(Model.Questions[j].Answers[k].Nomi)
+
+                                        </label>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="questions__question">
+                                        <input type="radio" onclick="post1(this);" asp-for="Questions[j].AnswerID" id="@idA" value="@Model.Questions[j].Answers[k].ID">
+
+                                        <label for="@idA" data-question-number=@A>
+
+                                            @Html.Raw(Model.Questions[j].Answers[k].Nomi)
+
+                                        </label>
+                                    </div>
+                                }
+
+                                A++;
+
+                            }
+                        </div>
+
+
+                    }
+
+                </div>
+
+
+            </div>
+
+
+        }
+
+
+    </div>
+    <div class="container-fluid">
+        <div class="esh-pager">
+
+            <div class="esh-pager-wrapper row">
+
+                <div class="col s1 m1 l1 xl1">
+
+                    <a onclick="Prev(this)" class="esh-pager-item-left esh-pager-item--navigable btn is-disabled"
+                       aria-label="Previous">
+                        <i class="fa fa-chevron-circle-left"></i>
+
+                    </a>
+                </div>
+                <div class="col s1 m1 l1  xl1 offset-s10 offset-m10 offset-l10 offset-xl10">
+                    <a onclick="Next(this)" ; class="esh-pager-item-right esh-pager-item--navigable btn"
+                       id="Next"
+                       aria-label="Next">
+                        <i class="fa fa-chevron-circle-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+</form>
+<script src="~/js/sweetalert2.min.js"></script>
+<script type="text/javascript">
+        function Next(sender) {
+            var a = $(".nav-item a[class*='active']:first");
+            var actualPage = a.data("page");
+            var totalPage =@Model.PaginationInfo.TotalItems;
+            var nexPage = actualPage + 1;
+            if (actualPage == 1) { $(sender).parent().prev().children().removeClass('is-disabled') }
+            if (nexPage === totalPage) {
+                $(sender).addClass('is-disabled');
+                $(a).parent().next().children().click();
+            } else {
+                  $(a).parent().next().children().click();
+
+            }
+
+        }
+        function Tab(sender) {
+            var clickPage = $(sender).data("page");
+            if (clickPage == 1) {
+                $("a[aria-label*='Previous']").addClass('is-disabled');
+                 $("a[aria-label*='Next']").removeClass('is-disabled');
+                return;
+            }
+            if (clickPage == @Model.PaginationInfo.TotalItems) {
+                $("a[aria-label*='Next']").addClass('is-disabled');
+                $("a[aria-label*='Previous']").removeClass('is-disabled');
+                return;
+            }
+            $("a[aria-label*='Previous']").removeClass('is-disabled');
+             $("a[aria-label*='Next']").removeClass('is-disabled');
+
+        }
+        function Prev(sender) {
+            var a = $(".nav-item a[class*='active']:first");
+            var actualPage = a.data("page");
+            var totalPage =@Model.PaginationInfo.TotalItems;
+            var nexPage = actualPage - 1;
+            if (actualPage == totalPage) { $(sender).parent().next().children().removeClass('is-disabled') }
+            if (nexPage === 1) {
+                $(sender).addClass('is-disabled');
+
+                $(a).parent().prev().children().click();
+            } else {
+                  $(a).parent().prev().children().click();
+
+            }
+
+        }
+        function post1(sender) {
+
+          
+             var questionID = $(sender).parent().parent().prev().find('input[data-id]').data("id");
+            var answerID = $(sender).attr("value");
+           $('#load').show();
+            $("a[class*= 'nav-link']").addClass("disabled");
+            $.ajax({
+            method: "POST",
+        url: "@Url.Action("Tester", "Home", new { area = "TestsSchools" })",
+                data: {QuestionID: questionID, AnswerID: answerID },
+                success: function (result) {
+                    if (result.status) {
+                      
+                        $("a[class*= 'disabled']").removeClass("disabled");
+                        $("a[class='nav-link active']").attr("class", "nav-link1 active");
+                        $('#load').hide();
+                    }
+                    else {
+                        $("a[class*= 'disabled']").removeClass("disabled");
+                        $('#load').hide();
+                        Swal.fire('Hatolik', '', 'error');
+
+                    }
+
+
+                },
+                timeout:6000,
+                error: function (result) {
+                   
+                        $("a[class*= 'disabled']").removeClass("disabled");
+                      
+                        $('#load').hide();
+                        Swal.fire("Tarmoqda uzilish \n Boshqattan urinib ko'ring", '', 'error');
+                   
+
+
+                }
+            });
+          
+
+
+    }
+     function failureTest(xhr) {
+         Swal.fire({
+             icon: 'error',
+             title: 'Hatolik...',
+             text: xhr.status+" : "+xhr.statusText
+
+         });
+
+        }
+
+
+</script>
+
+@section scripts{
+
+
+
+
+
+
+}
